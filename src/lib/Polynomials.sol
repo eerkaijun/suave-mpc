@@ -62,6 +62,8 @@ library Polynomials {
                     t = (t - alpha) / 2;
                 }
             } else if (b < a) {
+                // (a, b, u, v, s, t) = (b, a, s, t, u, v);
+                // a less efficient way to do the above to prevent stack too deep
                 int256 temp = a;
                 a = b;
                 b = temp;
@@ -71,7 +73,6 @@ library Polynomials {
                 temp = v;
                 v = t;
                 t = temp;
-                // (a, b, u, v, s, t) = (b, a, s, t, u, v);
             } else {
                 (b, s, t) = (b - a, s - u, t - v);
             }
