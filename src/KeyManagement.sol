@@ -19,10 +19,12 @@ contract KeyManagement {
     // Function to submit key shares
     function submitShares(uint256[] memory shares) public {
         keyShares = shares;
+        // TODO: submit these key shares into confidential store
     }
 
     // Function to reconstruct the original secret
     function reconstructResult() public view returns (int256) {
+        // TODO: read from confidential store before reconstructing
         int256 resultSecret = Shamir.reconstruct(Q, keyShares);
         return resultSecret;
     }
