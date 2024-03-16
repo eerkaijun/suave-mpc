@@ -1,7 +1,8 @@
-import {http, Hex} from '@flashbots/suave-viem';
-import {getSuaveProvider, getSuaveWallet} from '@flashbots/suave-viem/chains/utils';
+import {http, Hex, encodeFunctionData} from '@flashbots/suave-viem';
+import {SuaveTxRequestTypes, getSuaveProvider, getSuaveWallet} from '@flashbots/suave-viem/chains/utils';
 import {TransactionRequestSuave} from '@flashbots/suave-viem/chains/suave/types';
 import {suaveRigil} from '@flashbots/suave-viem/chains'
+import { StoreAbi } from './abis';
 
 // connect to your local SUAVE node
 const SUAVE_RPC_URL = 'http://localhost:8545';
@@ -29,3 +30,19 @@ const fundTx: TransactionRequestSuave = {
 
 const fund = await wallet.sendTransaction(fundTx);
 console.log('sent fund tx', fund);
+
+const storeTx: TransactionRequestSuave = {
+    to: "0xd594760B2A36467ec7F0267382564772D7b0b73c",
+    data: encodeFunctionData({
+        abi: StoreAbi,
+        functionName: 'example',
+        args: [],
+    }),
+    type: '0x43', // confidential request
+    gas: 5000000n,
+    gasPrice: 1000000000n,
+    kettleAddress: "0xB5fEAfbDD752ad52Afb7e1bD2E40432A485bBB7F",
+    //confidentialInputs: confidentialInput,
+}
+const store = await wallet.sendTransaction(storeTx);
+console.log('store tx', store)
