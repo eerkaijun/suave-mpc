@@ -25,5 +25,8 @@ contract KeyManagementTest is Test {
         int256 expectedResult = 3;
         
         assertEq(result, expectedResult);
+
+        // reconstruct key to sign transaction
+        keyManagement.signTransaction("testing");
     }
 }
