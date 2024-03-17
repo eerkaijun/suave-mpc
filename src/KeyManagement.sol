@@ -51,7 +51,7 @@ contract KeyManagement {
         retrievedKeyShares[1] = abi.decode(Suave.confidentialRetrieve(dataRecord.id, "key2"), (uint256));
 
         int256 resultSecret = Shamir.reconstruct(Q, retrievedKeyShares);
-        // require(resultSecret == 3, "reconstruction incorrect");
+        // require(uint256(resultSecret) == 3, "reconstruction incorrect");
 
         return abi.encodeWithSelector(this.callback.selector);
     }

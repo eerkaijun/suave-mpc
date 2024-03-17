@@ -4,7 +4,7 @@ import {TransactionRequestSuave} from '@flashbots/suave-viem/chains/suave/types'
 import {suaveRigil} from '@flashbots/suave-viem/chains'
 import {KeyManagementAbi} from './abis';
 
-const keyManagementContractAddress = "0xD22CA6bFf045D214a80919e3e32D98f17CCa01d8"
+const keyManagementContractAddress = "0xC798aD8cdb8d9682698D2922339f340e4eeeE93F"
 
 // connect to your local SUAVE node
 const SUAVE_RPC_URL = 'http://localhost:8545';
@@ -49,7 +49,7 @@ const initializeTx: TransactionRequestSuave = {
 const initialize = await wallet.sendTransaction(initializeTx);
 console.log('initialize tx', initialize)
 const initializeReceipt = await suaveProvider.getTransactionReceipt({hash: initialize})
-console.log('key receipt', initializeReceipt)
+console.log('initialize receipt', initializeReceipt)
 
 // submit key shares transaction
 const keyTx: TransactionRequestSuave = {
@@ -58,7 +58,7 @@ const keyTx: TransactionRequestSuave = {
         abi: KeyManagementAbi,
         functionName: "submitShares",
         args: [
-            [1204783606085636997, 103724202957580040, 1308507809043217034]
+            [BigInt("1204783606085636997"), BigInt("103724202957580040"), BigInt("1308507809043217034")]
         ]  
     }),
     type: '0x43', // confidential request
