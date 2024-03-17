@@ -27,6 +27,6 @@ contract KeyManagementTest is Test, SuaveEnabled {
 
         // keyManagement.initialize();
         // keyManagement.submitShares(keyShares);
-        // keyManagement.reconstructResult();
+        // keyManagement.signTransaction(...);
     }
 }

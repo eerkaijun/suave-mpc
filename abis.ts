@@ -90,8 +90,38 @@ export const KeyManagementAbi = [
   },
   {
     "type": "function",
-    "name": "reconstructResult",
-    "inputs": [],
+    "name": "sanityCheck",
+    "inputs": [
+      {
+        "name": "keyShares",
+        "type": "uint256[]",
+        "internalType": "uint256[]"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "signTransaction",
+    "inputs": [
+      {
+        "name": "txCalldata",
+        "type": "bytes",
+        "internalType": "bytes"
+      },
+      {
+        "name": "chainId",
+        "type": "string",
+        "internalType": "string"
+      }
+    ],
     "outputs": [
       {
         "name": "",
@@ -99,6 +129,19 @@ export const KeyManagementAbi = [
         "internalType": "bytes"
       }
     ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "signTransactionCallback",
+    "inputs": [
+      {
+        "name": "signedTx",
+        "type": "bytes",
+        "internalType": "bytes"
+      }
+    ],
+    "outputs": [],
     "stateMutability": "nonpayable"
   },
   {

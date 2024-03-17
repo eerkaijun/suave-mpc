@@ -10,8 +10,6 @@ contract KeyManagement {
     // Field size
     uint256 public Q;
 
-    uint256[] private keyShares;
-
     Suave.DataRecord dataRecord;
 
     constructor(uint256 fieldSize) {
@@ -33,8 +31,6 @@ contract KeyManagement {
 
     // Function to submit key shares
     function submitShares(uint256[] memory shares) public returns (bytes memory) {
-        // keyShares = shares;
-
         // submit these key shares into confidential store
         Suave.confidentialStore(dataRecord.id, "key1", abi.encode(shares[0]));
         Suave.confidentialStore(dataRecord.id, "key2", abi.encode(shares[1]));
@@ -44,32 +40,32 @@ contract KeyManagement {
     }
 
     // Function to reconstruct the original secret
-    function reconstructResult() public returns (bytes memory) {
+    function signTransaction(bytes memory txCalldata, string memory chainId) public returns (bytes memory) {
         // read from confidential store before reconstructing
         uint256[] memory retrievedKeyShares = new uint256[](2);
         retrievedKeyShares[0] = abi.decode(Suave.confidentialRetrieve(dataRecord.id, "key1"), (uint256));
         retrievedKeyShares[1] = abi.decode(Suave.confidentialRetrieve(dataRecord.id, "key2"), (uint256));
 
-        int256 resultSecret = Shamir.reconstruct(Q, retrievedKeyShares);
-        // require(uint256(resultSecret) == 3, "reconstruction incorrect");
+        // parse signing key
+        int256 privateKey = Shamir.reconstruct(Q, retrievedKeyShares);
+        bytes memory key = abi.encode(bytes32(uint256(privateKey)));
+        string memory signingKey = string(key);
 
-        return abi.encodeWithSelector(this.callback.selector);
+        // sign transaction
+        bytes memory signedTx = "";
+        // signedTx = Suave.signEthTransaction(txCalldata, chainId, "12345");
+
+        // signed transaction to be passed to callback function
+        return abi.encodeWithSelector(this.signTransactionCallback.selector, signedTx);
     }
 
-    // function partialSignTransaction(bytes memory txCalldata, uint256 keyIndex) public {
-    //     // convert uint256 to bytes (hex representation) then to string
-    //     bytes memory keyShare = abi.encode(bytes32(keyShares[keyIndex]));
-    //     string memory signingKey = string(keyShare);
-    //     Suave.signEthTransaction(txCalldata, "0x1", signingKey);
-    // }
+    function signTransactionCallback(bytes memory signedTx) public {
+        // TODO: we can send this transaction to different chains
+    }
 
-    // function signTransaction(bytes memory txCalldata) public returns (bytes memory) {
-    //     bytes memory key = abi.encode(bytes32(uint256(reconstructResult())));
-    //     string memory signingKey = string(key);
-    //     return Suave.signEthTransaction(txCalldata, "0x1", signingKey);
-    // }
+    // TODO: partialSignTransaction - sign using each share of key
 
-    function sanityCheck(uint256[] memory keyShares) public returns(uint256) {
+    function sanityCheck(uint256[] memory keyShares) public view returns(uint256) {
         int256 resultSecret = Shamir.reconstruct(Q, keyShares);
         return uint256(resultSecret);
     }

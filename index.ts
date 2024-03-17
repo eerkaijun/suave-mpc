@@ -4,7 +4,7 @@ import {TransactionRequestSuave} from '@flashbots/suave-viem/chains/suave/types'
 import {suaveRigil} from '@flashbots/suave-viem/chains'
 import {KeyManagementAbi} from './abis';
 
-const keyManagementContractAddress = "0xC798aD8cdb8d9682698D2922339f340e4eeeE93F"
+const keyManagementContractAddress = "0xF45DA749ad6369d9C8bF70eac31041526E9dEFb1"
 
 // connect to your local SUAVE node
 const SUAVE_RPC_URL = 'http://localhost:8545';
@@ -21,17 +21,17 @@ const wallet = getSuaveWallet({
 
 console.log('Wallet Address:', wallet.account.address);
 
-// test funding transaction
-const fundTx: TransactionRequestSuave = {
-    type: '0x0',
-    value: 100000000000000001n,
-    gasPrice: 10000000000000n,
-    chainId: suaveRigil.id,
-    to: wallet.account.address,
-    gas: 21000n,
-};
-const fund = await wallet.sendTransaction(fundTx);
-console.log('sent fund tx', fund);
+// // test funding transaction
+// const fundTx: TransactionRequestSuave = {
+//     type: '0x0',
+//     value: 100000000000000001n,
+//     gasPrice: 10000000000000n,
+//     chainId: suaveRigil.id,
+//     to: wallet.account.address,
+//     gas: 21000n,
+// };
+// const fund = await wallet.sendTransaction(fundTx);
+// console.log('sent fund tx', fund);
 
 // submit initialize transaction
 const initializeTx: TransactionRequestSuave = {
@@ -71,20 +71,25 @@ console.log('key tx', key)
 const keyReceipt = await suaveProvider.getTransactionReceipt({hash: key})
 console.log('key receipt', keyReceipt)
 
-// reconstruct key transaction
-const reconstructTx: TransactionRequestSuave = {
+// sign eth transaction
+const signature = await wallet.signTransaction({
+    to: wallet.account.address,
+    value: 1000000000000000000n
+})
+// submit eth transaction through suave
+const signTx: TransactionRequestSuave = {
     to: keyManagementContractAddress,
     data: encodeFunctionData({
         abi: KeyManagementAbi,
-        functionName: "reconstructResult",
-        args: []  
+        functionName: "signTransaction",
+        args: [signature, "0x1"]  
     }),
     type: '0x43', // confidential request
     gas: 20000000n,
     gasPrice: 1000000000n,
     kettleAddress: "0xB5fEAfbDD752ad52Afb7e1bD2E40432A485bBB7F",
 }
-const reconstruct = await wallet.sendTransaction(reconstructTx)
-console.log('reconstruct tx', reconstruct)
-const reconstructReceipt = await suaveProvider.getTransactionReceipt({hash: reconstruct})
-console.log('reconstruction receipt', reconstructReceipt)
+const sign = await wallet.sendTransaction(signTx)
+console.log('sign tx', sign)
+const signReceipt = await suaveProvider.getTransactionReceipt({hash: sign})
+console.log('sign transaction receipt', signReceipt)
