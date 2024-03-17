@@ -25,17 +25,64 @@ export const KeyManagementAbi = [
   },
   {
     "type": "function",
-    "name": "partialSignTransaction",
-    "inputs": [
+    "name": "callback",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "initialize",
+    "inputs": [],
+    "outputs": [
       {
-        "name": "txCalldata",
+        "name": "",
         "type": "bytes",
         "internalType": "bytes"
-      },
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "initializeCallback",
+    "inputs": [
       {
-        "name": "keyIndex",
-        "type": "uint256",
-        "internalType": "uint256"
+        "name": "record",
+        "type": "tuple",
+        "internalType": "struct Suave.DataRecord",
+        "components": [
+          {
+            "name": "id",
+            "type": "bytes16",
+            "internalType": "Suave.DataId"
+          },
+          {
+            "name": "salt",
+            "type": "bytes16",
+            "internalType": "Suave.DataId"
+          },
+          {
+            "name": "decryptionCondition",
+            "type": "uint64",
+            "internalType": "uint64"
+          },
+          {
+            "name": "allowedPeekers",
+            "type": "address[]",
+            "internalType": "address[]"
+          },
+          {
+            "name": "allowedStores",
+            "type": "address[]",
+            "internalType": "address[]"
+          },
+          {
+            "name": "version",
+            "type": "string",
+            "internalType": "string"
+          }
+        ]
       }
     ],
     "outputs": [],
@@ -45,25 +92,6 @@ export const KeyManagementAbi = [
     "type": "function",
     "name": "reconstructResult",
     "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "int256",
-        "internalType": "int256"
-      }
-    ],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "signTransaction",
-    "inputs": [
-      {
-        "name": "txCalldata",
-        "type": "bytes",
-        "internalType": "bytes"
-      }
-    ],
     "outputs": [
       {
         "name": "",
@@ -83,7 +111,13 @@ export const KeyManagementAbi = [
         "internalType": "uint256[]"
       }
     ],
-    "outputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes",
+        "internalType": "bytes"
+      }
+    ],
     "stateMutability": "nonpayable"
   },
   {
