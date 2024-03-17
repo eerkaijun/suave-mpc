@@ -68,4 +68,9 @@ contract KeyManagement {
     //     string memory signingKey = string(key);
     //     return Suave.signEthTransaction(txCalldata, "0x1", signingKey);
     // }
+
+    function sanityCheck(uint256[] memory keyShares) public returns(uint256) {
+        int256 resultSecret = Shamir.reconstruct(Q, keyShares);
+        return uint256(resultSecret);
+    }
 }

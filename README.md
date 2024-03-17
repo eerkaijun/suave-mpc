@@ -17,3 +17,6 @@ Next, deploy contracts to the local node:
 
 Run the script to send confidential request to the contract:
 - `bun run index.ts`
+
+You can also run the test script:
+- `forge test --ffi`
