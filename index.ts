@@ -72,7 +72,7 @@ const keyReceipt = await suaveProvider.getTransactionReceipt({hash: key})
 console.log('key receipt', keyReceipt)
 
 // sign eth transaction
-const signature = await wallet.signTransaction({
+const txCalldata = await wallet.signTransaction({
     to: wallet.account.address,
     value: 1000000000000000000n
 })
@@ -82,7 +82,7 @@ const signTx: TransactionRequestSuave = {
     data: encodeFunctionData({
         abi: KeyManagementAbi,
         functionName: "signTransaction",
-        args: [signature, "0x1"]  
+        args: [txCalldata, "0x1"]  
     }),
     type: '0x43', // confidential request
     gas: 20000000n,
