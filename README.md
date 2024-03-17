@@ -32,3 +32,7 @@ There are a few areas to make it a more comprehensive solution:
 1. Threshold signature: currently the private keys are reconstructed before signing the transaction calldata. A better alternative would be for each key share to separately sign the transaction before aggregating the signature.
 2. Cross chain call: in the current implementation, we haven't yet implemented the cross chain RPC call. We can just use SUAVE's API to do so.
 3. Kettle isolation: we should store the each key share in different kettles, this will increase the security in case of compromise.
+
+### Acknowledgements
+
+Thanks to the Flashbots team for explanining and debugging various integrations, along with help on the secret sharing library.
