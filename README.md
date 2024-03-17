@@ -1,4 +1,4 @@
-## chain-abstraction
+## suave-mpc
 
 ### Prerequisites
 
